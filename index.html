@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous" />
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+      </script>
+
+      <title>Sensus Site</title>
+
+      <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;400;500;600;700;900&display=swap"
+            rel="stylesheet" />
+      <style>
+            * {
+                  font-family: 'Noto Serif KR', serif;
+            }
+
+            .mypic {
+                  width: 100%;
+                  height: 300px;
+
+                  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                        url('https://www.nfkino.no/sites/nfkino.no/files/styles/video_poster/public/media-images/2022-10/Black%20Panther-%20Wakanda%20Forever%20web.jpg?h=dd5bd8a1&itok=EQwGqyjg');
+                  background-position: center 30%;
+                  background-size: cover;
+
+                  color: white;
+
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: center;
+            }
+
+            .mypost {
+                  width: 95%;
+                  max-width: 500px;
+                  margin: 20px auto 20px auto;
+
+                  box-shadow: 0px 0px 3px 0px black;
+                  padding: 20px;
+            }
+
+            .mypost>button {
+                  margin-top: 15px;
+            }
+
+            .mycards {
+                  width: 95%;
+                  max-width: 500px;
+                  margin: auto;
+            }
+
+            .mycards>.card {
+                  margin-top: 10px;
+                  margin-bottom: 10px;
+            }
+      </style>
+      <script>
+            $(document).ready(function () {
+                  $.ajax({
+                        type: 'GET',
+                        url: 'http://spartacodingclub.shop/sparta_api/weather/bogor',
+                        data: {},
+                        success: function (response) {
+                              $('#temp').text(response['temp']);
+                        }
+                  })
+            });
+
+            function random() {
+                  $.ajax({
+                        url: 'https://randomuser.me/api/',
+                        dataType: 'json',
+                        success: function (data) {
+                              let firstName = data['result'][0]['name']['first'];
+                              let location = data['result'][0]['location'];
+                              let phoneNumber = data['result'][0]['registered'];
+
+                              console.log('Nama: ' + firstName);
+                              console.log('Lokasi: ' + location.street + ', ' + location.city + ', ' +
+                                    location.state + ', ' + location.country);
+                              console.log('Nomor Telepon: ' + phoneNumber);
+                        }
+                  });
+            }
+      </script>
+</head>
+
+<body>
+      <div class="mypic">
+            <h1>SENSUS WARGA WAKANDA</h1>
+            <p>Current Temperature in Bogor: <span id="temp">36</span>degrees</p>
+            <p>Rendy Bima Pratama Winata || Universitas Pakuan</p>
+      </div>
+
+      <body>
+            <div class="container">
+                  <div class="mypost">
+                        <div class="form-floating mb-3">
+                              <input type="text" class="form-control" id="nickname" placeholder="Nickname" />
+                              <label for="nickname">Nickname</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                              <input class="form-control" placeholder="Alamat" id="address" />
+                              <label for="address">Address</label>
+                        </div>
+                        <div class="form-floating">
+                              <input class="form-control" placeholder="No Hp" id="phone" />
+                              <label for="phone">Phone</label>
+                        </div>
+                        <button type="button" onclick="addData()" class="btn btn-primary">SUBMIT</button>
+                        <button type="button" onclick="random()" class="btn btn-warning">RANDOM</button>
+                  </div>
+                  <div class="mycards" id="comment-list">
+                        <div class="card">
+                              <div class="card-body">
+                                    <blockquote class="blockquote mb-0">
+                                          <p>Budi (082276453678)</p>
+                                          <footer class="blockquote-footer">Jl. Banana</footer>
+                                    </blockquote>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+
+            <script>
+                  function addData() {
+                        // Ambil nilai dari input
+                        let nickname = document.getElementById("nickname").value;
+                        let address = document.getElementById("address").value;
+                        let phone = document.getElementById("phone").value;
+
+                        // Buat elemen HTML baru dengan data yang diberikan
+                        let newCard = document.createElement("div");
+                        newCard.classList.add("card");
+                        newCard.innerHTML = `
+                  <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                      <p>${nickname} (${phone})</p>
+                      <footer class="blockquote-footer">${address}</footer>
+                    </blockquote>
+                  </div>
+                `;
+
+                        // Sisipkan elemen baru ke dalam elemen dengan ID "comment-list"
+                        let commentList = document.getElementById("comment-list");
+                        commentList.appendChild(newCard);
+
+                        // Kosongkan nilai dari input setelah data ditambahkan
+                        document.getElementById("nickname").value = "";
+                        document.getElementById("address").value = "";
+                        document.getElementById("phone").value = "";
+
+                        // Tampilkan popup "Sukses"
+                        alert("Sukses!");
+                  }
+
+                  function random() {
+                        $.ajax({
+                              url: 'https://randomuser.me/api/',
+                              dataType: 'json',
+                              success: function (data) {
+                                    let nama = data.results[0].name.first;
+                                    let kota = data.results[0].location.city;
+                                    let nomorTelepon = data.results[0].phone;
+
+                                    // Buat elemen HTML baru dengan data yang diberikan
+                                    let newCard = document.createElement("div");
+                                    newCard.classList.add("card");
+                                    newCard.innerHTML = `
+                      <div class="card-body">
+                        <blockquote class="blockquote mb-0">
+                          <p>${nama} (${nomorTelepon})</p>
+                          <footer class="blockquote-footer">${kota}</footer>
+                        </blockquote>
+                      </div>
+                    `;
+
+                                    // Sisipkan elemen baru ke dalam elemen dengan ID "comment-list"
+                                    let commentList = document.getElementById("comment-list");
+                                    commentList.appendChild(newCard);
+
+                                    // Tampilkan popup "Sukses"
+                                    alert("Sukses!");
+                              },
+                              error: function () {
+                                    // Tampilkan popup "Gagal" jika terjadi kesalahan
+                                    alert("Gagal!");
+                              }
+                        });
+                  }
+            </script>
+      </body>
+
+</html>
